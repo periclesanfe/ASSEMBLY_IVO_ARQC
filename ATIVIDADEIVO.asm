@@ -1,76 +1,83 @@
 .data
-option1: .asciiz "\nOpção 1: Calcular a sequência de Fibonacci\n"
-option2: .asciiz "Opção 2: Converter Fahrenheit para Celsius\n"
-option3: .asciiz "Opção 3: Calcular o enésimo número par\n"
-option4: .asciiz "Opção 4: Encerrar o programa\n"
+option1: .asciiz "\nOpÃ§Ã£o 1: Calcular a sequÃªncia de Fibonacci\n"
+option2: .asciiz "OpÃ§Ã£o 2: Converter Fahrenheit para Celsius\n"
+option3: .asciiz "OpÃ§Ã£o 3: Calcular o enÃ©simo nÃºmero par\n"
+option4: .asciiz "OpÃ§Ã£o 4: Encerrar o programa\n"
 input_prompt: .asciiz "\nDigite sua escolha (1, 2, 3 ou 4): "
-invalid_choice: .asciiz "Escolha inválida. Tente novamente.\n"
-space: .asciiz " "  # String representando espaço em branco
-func2: .asciiz "Opção 2 escolhida\n"
-func3: .asciiz "Opção 3 escolhida\n"
-prompt_fibonacci: .asciiz "Digite o valor de N para calcular o enésimo número da sequência de Fibonacci: "
-sequence_label: .asciiz "O enésimo número da sequência de Fibonacci é: "
+invalid_choice: .asciiz "Escolha invÃ¡lida. Tente novamente.\n"
+space: .asciiz " "  # String representando espaÃ§o em branco
+func2: .asciiz "OpÃ§Ã£o 2 escolhida\n"
+func3: .asciiz "OpÃ§Ã£o 3 escolhida\n"
+prompt_fibonacci: .asciiz "Digite o valor de N para calcular o enÃ©simo nÃºmero da sequÃªncia de Fibonacci: "
+out_fibonacci: .asciiz "O enÃ©simo nÃºmero da sequÃªncia de Fibonacci Ã©: "
+prompt_far: .asciiz "Digite a temperatura em Fahrenheit: "
+decimal: .float 100.0
+
+# Mensagens para a parte do cÃ³digo que realiza a funÃ§Ã£o do EnÃ©simo Par:
+msg_par: .asciiz "Digite o enÃ©nesimo par que deseja: "
+result_par: .asciiz "Esse Ã© o nÃºmero par correspondente: "
+
 
 .text
 .globl main
 
 main:
-    # Mostrar as opções para o usuário
-    # Imprimi opção 1
+    # Mostrar as opÃ§Ãµes para o usuÃ¡rio
+    # Imprimi opÃ§Ã£o 1
     li $v0, 4             
     la $a0, option1       
     syscall
 
-    # Imprimi opção 2
+    # Imprimi opÃ§Ã£o 2
     li $v0, 4             
     la $a0, option2       
     syscall
 
-    # Imprimi opção 3
+    # Imprimi opÃ§Ã£o 3
     li $v0, 4             
     la $a0, option3       
     syscall
 
-    # Ler a escolha do usuário
+    # Ler a escolha do usuÃ¡rio
     li $v0, 4             
     la $a0, input_prompt  
     syscall
 
-    # Ler a escolha do usuário
+    # Ler a escolha do usuÃ¡rio
     li $v0, 5             
     syscall
     move $t0, $v0         
 
-    # Verificar a escolha do usuário
+    # Verificar a escolha do usuÃ¡rio
     
-    # Verificar se o número é menor que 1
+    # Verificar se o nÃºmero Ã© menor que 1
     li $t1, 1          # $t1 = 1
-    slt $t2, $t0, $t1  # $t2 = 1 se $t0 < $t1, caso contrário $t2 = 0
+    slt $t2, $t0, $t1  # $t2 = 1 se $t0 < $t1, caso contrÃ¡rio $t2 = 0
     
-    # Se o valor de $t2 é 0:
+    # Se o valor de $t2 Ã© 0:
     beqz $t2, number_in_range
 
    # Se o valor de $t2 for 1:
    beq $t2, 1, invalid
 
 number_valid:
-    # Código para cada escolha
+    # CÃ³digo para cada escolha
     beq $t0, 1, fibonacci_option    # Se a escolha for 1, ir para fibonacci_option
     beq $t0, 2, fahrenheit_option   # Se a escolha for 2, ir para fahrenheit_option
     beq $t0, 3, par_option          # Se a escolha for 3, ir para par_option
     beq $t0, 4, exit_program         # Se a escolha for 4, fechar o programa
 
 invalid:
-    # Escolha inválida
+    # Escolha invÃ¡lida
     li $v0, 4
     la $a0, invalid_choice
     syscall
 
-    # Voltar para o início para receber uma nova escolha
+    # Voltar para o inÃ­cio para receber uma nova escolha
     j main    
       
 number_in_range:
-    # Verificar se o número é maior que 4
+    # Verificar se o nÃºmero Ã© maior que 4
     li $t1, 4          
     sgt $t2, $t0, $t1  # $t2 = 1 se $t0 > $t1
 
@@ -81,8 +88,8 @@ number_in_range:
     beq $t2, 1, invalid
 
 fibonacci:
-    addiu $sp, $sp, -12      # Alocar espaço para os registradores $s0, $s1 e $s2
-    sw $ra, 0($sp)           # Salvar o endereço de retorno
+    addiu $sp, $sp, -12      # Alocar espaÃ§o para os registradores $s0, $s1 e $s2
+    sw $ra, 0($sp)           # Salvar o endereÃ§o de retorno
     sw $s0, 4($sp)           # Salvar $s0
     sw $s1, 8($sp)           # Salvar $s1
 
@@ -104,59 +111,106 @@ fibonacci_loop:
     bgtz $s0, fibonacci_loop # Se N > 0, repetir o loop
 
 fibonacci_exit:
-    move $v1, $s1            # Colocar o valor do enésimo número em $v1
+    move $v1, $s1            # Colocar o valor do enÃ©simo nÃºmero em $v1
 
-    lw $ra, 0($sp)           # Restaurar o endereço de retorno
+    lw $ra, 0($sp)           # Restaurar o endereÃ§o de retorno
     lw $s0, 4($sp)           # Restaurar $s0
     lw $s1, 8($sp)           # Restaurar $s1
-    addiu $sp, $sp, 12       # Liberar o espaço alocado
+    addiu $sp, $sp, 12       # Liberar o espaÃ§o alocado
 
     jr $ra                   # Retornar
 
 fibonacci_option:
-    # Solicitar o valor de N para calcular o enésimo número
+    # Solicitar o valor de N para calcular o enÃ©simo nÃºmero
     li $v0, 4
     la $a0, prompt_fibonacci
     syscall
 
-    # Ler o valor de N digitado pelo usuário
+    # Ler o valor de N digitado pelo usuÃ¡rio
     li $v0, 5
     syscall
     move $a0, $v0
 
-    jal fibonacci            # Chamar a função fibonacci para calcular o enésimo número
+    jal fibonacci            # Chamar a funÃ§Ã£o fibonacci para calcular o enÃ©simo nÃºmero
 
-    # Imprimir a mensagem "O enésimo número da sequência de Fibonacci é:"
+    # Imprimir a mensagem "O enÃ©simo nÃºmero da sequÃªncia de Fibonacci Ã©:"
     li $v0, 4
-    la $a0, sequence_label
+    la $a0, out_fibonacci
     syscall
 
-    # Imprimir o valor do enésimo número
+    # Imprimir o valor do enÃ©simo nÃºmero
     move $a0, $v1 # move valor de 
     li $v0, 1
     syscall
 
-    j main               # Voltar para o início para receber uma nova escolha
+    j main               # Voltar para o inÃ­cio para receber uma nova escolha
 
-par_option:
-    li $v0, 4             # Código do serviço 4: imprimir string
-    la $a0, func3       # Carregar o endereço da string option1
-    syscall
-    # Código para a opção 3: calcular o enésimo número par
-    # Implemente o código para calcular o enésimo número par aqui
-
-    j main               # Voltar para o início para receber uma nova escolha
-    
 fahrenheit_option:
-    li $v0, 4             # Código do serviço 4: imprimir string
-    la $a0, func2       # Carregar o endereço da string option1
+    li $v0, 4             # CÃ³digo do serviÃ§o 4: imprimir string
+    la $a0, prompt_far
     syscall
-    # Código para a opção 3: calcular o enésimo número par
-    # Implemente o código para calcular o enésimo número par aqui
 
-    j main               # Voltar para o início para receber uma nova escolha
+    # LÃª o valor de temperatura em Fahrenheit do usuÃ¡rio
+    li $v0, 6
+    syscall
+    mov.s $f0, $f0
+
+    # Converte para Celsius usando a fÃ³rmula C = (F - 32) * 5/9
+    li $t0, 5
+    mtc1 $t0, $f1
+    cvt.s.w $f1, $f1
+    li $t0, 9
+    mtc1 $t0, $f2
+    cvt.s.w $f2, $f2
+    div.s $f1, $f1, $f2
+    li $t0, 32
+    mtc1 $t0, $f2
+    cvt.s.w $f2, $f2
+    sub.s $f0, $f0, $f2
+    mul.s $f12, $f0, $f1
+
+    # Arredonda o resultado para duas casas decimais
+    lwc1   $f2,decimal 
+    mul.s  $f12,$f12,$f2 
+    round.w.s  $f12,$f12 
+    cvt.s.w  $f12,$f12 
+    div.s  $f12,$f12,$f2 
+
+    # Imprime o resultado na tela
+    li $v0, 2
+    syscall
+    
+
+    j main               # Voltar para o inÃ­cio para receber uma nova escolha
  
+par_option: # CÃ³digo para a opÃ§Ã£o 3: calcular o enÃ©simo nÃºmero par
+    
+    # Aqui Ã© o cÃ³digo para mensagem que serÃ¡ exibida anteriormente ao nÂ° digitado
+    li $v0, 4 # Imprimir string
+    la $a0, msg_par # Atribiu o valor da mensagem que deve ser mostrada antes do nÂ° digitado (anteriormente - previously)
+    syscall
+    
+    # Aqui Ã© o cÃ³digo para absorver o nÂ° digitado
+    li $v0, 5 # Ler inteiro
+    syscall
+    move $t0, $v0  # Armazena o nÃºmero em $t0
+
+    # Para descobrir o par de um nÃºmero, basta multiplicar o nÃºmero por 2
+    sll $t0, $t0, 1 # Aqui ocorre a multiplicaÃ§Ã£o, mas por deslocamento, nÃ£o necessariamente por operaÃ§Ã£o, deslocando uma casa para a esquerda, o valor original dobra (logo *2)
+    
+    # CÃ³digo para exibir a mensagem antes do resultado(resultado - result)
+    li $v0, 4 # Imprimir string
+    la $a0, result_par # Aqui transferimos o valor de result_par para o $a0 e printamos na tela a mensagem
+    syscall
+    
+    # CÃ³digo para exibir o resultado de qual Ã© o enÃ©simo par
+    li $v0, 1
+    move $a0, $t0 # Pega o valor de $t0 e coloca em $a0 para poder printar na tela como inteiro.
+    syscall
+
+    j main               # Voltar para o inÃ­cio para receber uma nova escolha
+    
 exit_program:
-    li $v0, 10    # Código do serviço 10: encerrar o programa
+    li $v0, 10    # CÃ³digo do serviÃ§o 10: encerrar o programa
     syscall
        
