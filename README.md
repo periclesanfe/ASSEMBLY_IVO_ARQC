@@ -16,4 +16,4 @@ O nosso código implementa todos os conceitos pedidos na atividade de Assembly-M
 * Conversão de temperatura (parte elaborada por Haul)
 * Função do Enésimo Par (elaborada por André)
 
-assim sendo, cada um prestou sua colaboração para execução do trabalho - inclusive planejamento das apresentações que pelas circunstâncias do momento não irão acontecer. Ainda, o código está comentado na medida em que mesmo mantendo a explicação o mesmo se mantesse organizado!
+assim sendo, cada um prestou sua colaboração para execução do trabalho - inclusive planejamento das apresentações que pelas circunstâncias do momento não irão acontecer. Ainda, o código está comentado na medida em que se mantesse organizado!
